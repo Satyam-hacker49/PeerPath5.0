@@ -1,0 +1,34 @@
+.circular-gallery {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  cursor: grab;
+  position: relative;
+}
+
+.circular-gallery:active {
+  cursor: grabbing;
+}
+
+.circular-gallery::before,
+.circular-gallery::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  width: 80px;
+  height: 100%;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.circular-gallery::before {
+  left: 0;
+  background: linear-gradient(to right, rgba(10,10,20,0.8) 60%, transparent 100%);
+  filter: blur(8px);
+}
+
+.circular-gallery::after {
+  right: 0;
+  background: linear-gradient(to left, rgba(10,10,20,0.8) 60%, transparent 100%);
+  filter: blur(8px);
+} 

@@ -43,7 +43,7 @@
   background-position: inherit;
   border-radius: inherit;
   transition: all 0.5s ease;
-  filter: contrast(1.2) saturate(1.2) blur(24px) opacity(0.5);
+  filter: contrast(2) saturate(2) blur(36px);
   transform: scale(0.8) translate3d(0, 0, 0.1px);
   background-size: 100% 100%;
   background-image: var(--behind-gradient);
@@ -51,7 +51,7 @@
 
 .pc-card-wrapper:hover,
 .pc-card-wrapper.active {
-  --card-opacity: 0.7;
+  --card-opacity: 1;
 }
 
 .pc-card-wrapper:hover::before,
@@ -61,27 +61,27 @@
 }
 
 .pc-card {
-  height: 50svh;
-  max-height: 350px;
+  height: 80svh;
+  max-height: 540px;
   display: grid;
   aspect-ratio: 0.718;
   border-radius: var(--card-radius);
   position: relative;
   background-blend-mode: color-dodge, normal, normal, normal;
   animation: glow-bg 12s linear infinite;
-  box-shadow: 0 8px 32px 0 rgba(60, 40, 120, 0.25);
+  box-shadow: rgba(0, 0, 0, 0.8) calc((var(--pointer-from-left) * 10px) - 3px) calc((var(--pointer-from-top) * 20px) - 6px) 20px -5px;
   transition: transform 1s ease;
   transform: translate3d(0, 0, 0.1px) rotateX(0deg) rotateY(0deg);
   background-size: 100% 100%;
   background-position: 0 0, 0 0, 50% 50%, 0 0;
-  background-image: radial-gradient(farthest-side circle at var(--pointer-x) var(--pointer-y), hsla(266, 100%, 80%, var(--card-opacity)) 6%, hsla(266, 70%, 60%, calc(var(--card-opacity)*0.5)) 30%, hsla(266, 50%, 40%, 0.2) 100%), linear-gradient(135deg, #2a185b 0%, #3b2f7f 100%);
+  background-image: radial-gradient(farthest-side circle at var(--pointer-x) var(--pointer-y), hsla(266, 100%, 90%, var(--card-opacity)) 4%, hsla(266, 50%, 80%, calc(var(--card-opacity) * 0.75)) 10%, hsla(266, 25%, 70%, calc(var(--card-opacity) * 0.5)) 50%, hsla(266, 0%, 60%, 0) 100%), radial-gradient(35% 52% at 55% 20%, #00ffaac4 0%, #073aff00 100%), radial-gradient(100% 100% at 50% 50%, #00c1ffff 1%, #073aff00 76%), conic-gradient(from 124deg at 50% 50%, #c137ffff 0%, #07c6ffff 40%, #07c6ffff 60%, #c137ffff 100%);
   overflow: hidden;
 }
 
 .pc-card:hover,
 .pc-card.active {
   transition: none;
-  transform: translate3d(0, 0, 0.1px) rotateX(calc(var(--rotate-y) * 0.5)) rotateY(calc(var(--rotate-x) * 0.5));
+  transform: translate3d(0, 0, 0.1px) rotateX(var(--rotate-y)) rotateY(var(--rotate-x));
 }
 
 .pc-card * {
@@ -96,7 +96,7 @@
   inset: 1px;
   position: absolute;
   background-image: var(--inner-gradient);
-  background-color: rgba(26, 10, 82, 0.8);
+  background-color: rgba(0, 0, 0, 0.9);
   transform: translate3d(0, 0, 0.01px);
 }
 
@@ -107,7 +107,7 @@
   mask-size: 150%;
   mask-position: top calc(200% - (var(--background-y) * 5)) left calc(100% - var(--background-x));
   transition: filter 0.6s ease;
-  filter: brightness(0.7) contrast(1.1) saturate(0.7) opacity(0.3);
+  filter: brightness(0.66) contrast(1.33) saturate(0.33) opacity(0.5);
   animation: holo-bg 18s linear infinite;
   mix-blend-mode: color-dodge;
 }
@@ -486,4 +486,4 @@
     font-size: 9px;
     border-radius: 50px;
   }
-} 
+}

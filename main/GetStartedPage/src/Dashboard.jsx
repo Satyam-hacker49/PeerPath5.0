@@ -237,31 +237,30 @@ export default function Dashboard({ currentUser, onLogout }) {
             >
               About the Creators
             </motion.h3>
-            <motion.div 
-              className="creator-cards"
-              initial="initial"
-              animate="animate"
-            >
-              <ProfileCard 
-                name="Satyam Sharma"
-                title="2nd Year CSE Student, MANIT"
-                handle="satyamsharma"
+            <div style={{ display: 'flex', gap: '2rem', justifyContent: 'center', flexWrap: 'wrap' }}>
+              <ProfileCard
+                name="Javi A. Torres"
+                title="Software Engineer"
+                handle="javicodes"
                 status="Online"
-                contactText="Contact"
-                avatarUrl="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=600&fit=crop&crop=face"
-                onContactClick={() => console.log('Contact Satyam')}
+                contactText="Contact Me"
+                avatarUrl="https://randomuser.me/api/portraits/men/32.jpg"
+                showUserInfo={true}
+                enableTilt={true}
+                onContactClick={() => console.log('Contact clicked')}
               />
-              <ProfileCard 
-                name="Naitik Verma"
-                title="2nd Year CSE Student, MANIT"
-                handle="naitikverma"
+              <ProfileCard
+                name="Emily R. Stone"
+                title="UI/UX Designer"
+                handle="emilydesigns"
                 status="Online"
-                contactText="Contact"
-                avatarUrl="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&h=600&fit=crop&crop=face"
-                onContactClick={() => console.log('Contact Naitik')}
+                contactText="Contact Me"
+                avatarUrl="https://randomuser.me/api/portraits/women/44.jpg"
+                showUserInfo={true}
+                enableTilt={true}
+                onContactClick={() => console.log('Contact clicked')}
               />
-              
-            </motion.div>
+            </div>
           </div>
         </motion.section>
       </motion.div>

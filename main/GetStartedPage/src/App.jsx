@@ -16,6 +16,26 @@ import SearchResults from './SearchResults.jsx';
 import ProtectedRoute from './ProtectedRoute.jsx';
 import ClickSpark from './components/ClickSpark.jsx';
 import './App.css';
+import CallIcon from '@mui/icons-material/Call';
+import EmailIcon from '@mui/icons-material/Email';
+import LocationOnIcon from '@mui/icons-material/LocationOn';
+import { SvgIcon } from '@mui/material';
+import emailjs from 'emailjs-com';
+import Particles from './components/Particles';
+
+function GradientCallIcon(props) {
+  return (
+    <SvgIcon {...props} viewBox="0 0 24 24">
+      <defs>
+        <linearGradient id="call-gradient" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stopColor="#8b5cf6" />
+          <stop offset="100%" stopColor="#00e0ff" />
+        </linearGradient>
+      </defs>
+      <CallIcon htmlColor="url(#call-gradient)" />
+    </SvgIcon>
+  );
+}
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -164,9 +184,109 @@ function App() {
               <Navigate to="/signup" replace />
             } />
           </Routes>
+          <Footer />
         </div>
       </Router>
     </ClickSpark>
+  );
+}
+
+function Footer() {
+  const [suggestion, setSuggestion] = React.useState("");
+  const [name, setName] = React.useState("");
+  const [email, setEmail] = React.useState("");
+  const [submitted, setSubmitted] = React.useState(false);
+
+  const sendEmail = (e) => {
+    e.preventDefault();
+    emailjs.sendForm(
+      'service_oc9j5ws',
+      'template_qkszgyo',
+      e.target,
+      'URmZf3Q1OWHqndVQZ'
+    ).then((result) => {
+        setSubmitted(true);
+        setName("");
+        setEmail("");
+        setSuggestion("");
+        window.alert('Feedback sent!');
+    }, (error) => {
+        alert('Failed to send. Please try again.');
+    });
+    e.target.reset();
+    setTimeout(() => setSubmitted(false), 3000);
+  };
+
+  return (
+    <footer className="footer-review enhanced-footer">
+      <div className="footer-container footer-modern">
+        {/* Left: Contact Us */}
+        <div className="footer-section contactus-section">
+          <h2 className="footer-heading-orange">Contact Us</h2>
+          <div className="footer-contact-info">
+            <div className="footer-contact-row">
+              <div>
+                <div><span className="footer-icon" style={{verticalAlign: 'middle'}}><CallIcon style={{ color: '#ff5c5c', fontSize: '1.2em', verticalAlign: 'middle' }} /></span> <strong>Satyam Sharma</strong></div>
+                <div><a href="tel:+918989539749">+91 89895 39749</a></div>
+                <div style={{ marginTop: '0.5rem' }}><span className="footer-icon" style={{verticalAlign: 'middle'}}><CallIcon style={{ color: '#ff5c5c', fontSize: '1.2em', verticalAlign: 'middle' }} /></span> <strong>Naitik Verma</strong></div>
+                <div><a href="tel:+917869385243">+91 78693 85243</a></div>
+              </div>
+            </div>
+            <div className="footer-contact-row email-row">
+              <span className="footer-icon" style={{verticalAlign: 'middle'}}><EmailIcon style={{ color: '#2196f3', fontSize: '1.2em', verticalAlign: 'middle' }} /></span>
+              <div className="footer-email-text">
+                <a href="mailto:peerpath.manit@outlook.com">peerpath.manit@outlook.com</a>
+                <a
+                  href="https://mail.google.com/mail/?view=cm&to=peerpath.manit@outlook.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="footer-gmail-link"
+                >
+                  Send via Gmail
+                </a>
+              </div>
+            </div>
+            <div className="footer-contact-row">
+              <span className="footer-icon" style={{verticalAlign: 'middle'}}><LocationOnIcon style={{ color: '#ff5c5c', fontSize: '1.2em', verticalAlign: 'middle' }} /></span>
+              <span>Maulana Azad National Institute of Technology, Bhopal</span>
+            </div>
+          </div>
+        </div>
+        {/* Divider */}
+        <div className="footer-divider" />
+        {/* Right: Write to us */}
+        <div className="footer-section writeus-section">
+          <h2 className="footer-heading-orange">Write to us</h2>
+          <form onSubmit={sendEmail} className="footer-write-form">
+            <input
+              type="text"
+              name="name"
+              value={name}
+              onChange={e => setName(e.target.value)}
+              placeholder="Fullname"
+              required
+            />
+            <input
+              type="email"
+              name="email"
+              value={email}
+              onChange={e => setEmail(e.target.value)}
+              placeholder="Email"
+              required
+            />
+            <textarea
+              name="message"
+              value={suggestion}
+              onChange={e => setSuggestion(e.target.value)}
+              placeholder="Message"
+              required
+            />
+            <button type="submit" className="footer-submit-btn">SUBMIT</button>
+            {submitted && <div className="thank-you">Thank you for your message!</div>}
+          </form>
+        </div>
+      </div>
+    </footer>
   );
 }
 

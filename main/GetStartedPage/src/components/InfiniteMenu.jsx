@@ -9,6 +9,79 @@ export default function InfiniteMenu() {
   const [topSolvers, setTopSolvers] = useState([]);
   const [loading, setLoading] = useState(true);
 
+  const reviews = [
+    {
+      image: 'https://randomuser.me/api/portraits/women/44.jpg',
+      name: 'Harsh Jain',
+      year: '2nd Year',
+      branch: 'CSE',
+      text: 'PeerPath made it so easy to find project partners!'
+    },
+    {
+      image: 'https://randomuser.me/api/portraits/men/32.jpg',
+      name: 'Granth Agrawal',
+      year: '2nd Year',
+      branch: 'ECE',
+      text: 'The resources section is a goldmine.'
+    },
+    {
+      image: 'https://randomuser.me/api/portraits/women/65.jpg',
+      name: 'Sumit Sahu',
+      year: '2nd Year',
+      branch: 'CSE',
+      text: 'Mentorship helped me ace my exams!'
+    },
+    {
+      image: 'https://randomuser.me/api/portraits/men/45.jpg',
+      name: 'Madhav Manawat',
+      year: '2nd Year',
+      branch: 'CSE',
+      text: 'Great for networking and learning.'
+    },
+    {
+      image: 'https://randomuser.me/api/portraits/women/68.jpg',
+      name: 'Aditya Soni',
+      year: '2nd Year',
+      branch: 'CSE',
+      text: 'I love the community vibe!'
+    },
+    {
+      image: 'https://randomuser.me/api/portraits/men/33.jpg',
+      name: 'Siddhant Jain',
+      year: '2nd Year',
+      branch: 'ECE',
+      text: 'PeerPath is the best for project collaboration.'
+    },
+    {
+      image: 'https://randomuser.me/api/portraits/women/22.jpg',
+      name: 'Parth Birla',
+      year: '2nd Year',
+      branch: 'cse',
+      text: 'Found amazing mentors here!'
+    },
+    {
+      image: 'https://randomuser.me/api/portraits/men/54.jpg',
+      name: 'ParthSarthi Ghosh',
+      year: '2nd Year',
+      branch: 'EE',
+      text: 'The community is super helpful.'
+    },
+    {
+      image: 'https://randomuser.me/api/portraits/women/77.jpg',
+      name: 'Shashank Agrawal',
+      year: '2nd Year',
+      branch: 'EE',
+      text: 'PeerPath helped me grow my network.'
+    },
+    {
+      image: 'https://randomuser.me/api/portraits/men/29.jpg',
+      name: 'Sumit Singh',
+      year: '2nd Year',
+      branch: 'CSE',
+      text: 'Best platform for students!'
+    },
+  ];
+
   // Fetch most active users from backend
   useEffect(() => {
     const fetchMostActive = async () => {
@@ -127,11 +200,9 @@ export default function InfiniteMenu() {
   // Auto-rotate when not interacting
   useEffect(() => {
     if (isMoving || loading) return;
-    
     const interval = setInterval(() => {
-      setRotation(prev => prev + 0.5);
-    }, 50);
-
+      setRotation(prev => prev + 0.6); // Slightly faster than before, but still smooth
+    }, 24);
     return () => clearInterval(interval);
   }, [isMoving, loading]);
 
@@ -152,43 +223,65 @@ export default function InfiniteMenu() {
   }
 
   return (
-    <div className="infinite-menu-container" ref={containerRef}>
+    <div className="infinite-menu-container" ref={containerRef} style={{ background: 'none' }}>
       <div 
         className="gallery-sphere"
         style={{ 
           transform: `rotateY(${rotation}deg)`,
-          transition: isMoving ? 'none' : 'transform 0.1s ease-out'
+          transition: isMoving ? 'none' : 'transform 0.45s cubic-bezier(0.4,0.2,0.2,1)'
         }}
       >
-        {topSolvers.map((solver, index) => {
-          const angle = (index / topSolvers.length) * 360;
-          const radius = 300; // Distance from center
+        {reviews.map((review, index) => {
+          const angle = (index / reviews.length) * 360;
+          const radius = 300;
           const x = Math.cos((angle * Math.PI) / 180) * radius;
           const z = Math.sin((angle * Math.PI) / 180) * radius;
-          
           return (
             <div
-              key={solver._id}
+              key={review.name}
               className={`gallery-item ${index === activeIndex ? 'active' : ''}`}
               style={{
                 transform: `translate3d(${x}px, 0px, ${z}px) rotateY(${-rotation}deg)`,
-                zIndex: index === activeIndex ? 10 : 1
+                zIndex: index === activeIndex ? 10 : 1,
+                width: 'auto',
+                minWidth: 240,
+                maxWidth: 320,
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                justifyContent: 'flex-start',
+                boxSizing: 'border-box',
+                background: 'rgba(26,10,82,0.92)',
+                border: '2px solid #a259ff',
+                borderRadius: 18,
+                padding: '1.5rem 1.2rem 1.2rem 1.2rem',
+                boxShadow: '0 4px 18px #a259ff22',
+                margin: '0 2.2rem',
               }}
               onClick={() => handleItemClick(index)}
             >
-              <div className="item-image">
-                <img 
-                  src={solver.profilePhoto ? `http://localhost:5000${solver.profilePhoto}` : `https://picsum.photos/900/900?random=${index + 1}`} 
-                  alt={solver.username} 
-                />
-              </div>
-              <div className="item-overlay">
-                <h3 className="item-title">{solver.username}</h3>
-                <p className="item-description">
-                  {solver.activeDays} days active
-                  {solver.expertise && ` • ${solver.expertise}`}
-                </p>
-              </div>
+              <img
+                src={review.image}
+                alt={review.name}
+                style={{
+                  width: 90,
+                  height: 90,
+                  borderRadius: '50%',
+                  objectFit: 'cover',
+                  marginBottom: 16,
+                  border: '3px solid #a259ff',
+                  background: '#222',
+                  boxShadow: '0 2px 12px #a259ff44',
+                  display: 'block',
+                  marginLeft: 'auto',
+                  marginRight: 'auto',
+                }}
+              />
+              <div style={{ color: '#fff', fontWeight: 700, fontSize: 20, textAlign: 'center', marginBottom: 4 }}>{review.name}</div>
+              <div style={{ color: '#64b5f6', fontSize: 14, marginBottom: 10, textAlign: 'center' }}>{review.year} • {review.branch}</div>
+              <p style={{ color: '#fff', fontSize: 15, fontStyle: 'italic', margin: 0, textAlign: 'center' }}>
+                "{review.text}"
+              </p>
             </div>
           );
         })}

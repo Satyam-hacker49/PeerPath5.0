@@ -9,6 +9,9 @@ import TypewriterHeading from './components/TypewriterHeading';
 import FallingText from './components/FallingText';
 import Counter from './components/Counter';
 import InfiniteMenu from './components/InfiniteMenu';
+import CircularGallery from './CircularGallery';
+import Particles from './components/Particles';
+
 
 const FrontPage = ({ currentUser, onLogout }) => {
   const navigate = useNavigate();
@@ -58,6 +61,14 @@ const FrontPage = ({ currentUser, onLogout }) => {
 
   const handleGetStarted = () => navigate('/dashboard');
 
+  const reviews = [
+    { text: "PeerPath made it so easy to find project partners!", name: "Riya Sharma", branch: "CSE, 2nd Year" },
+    { text: "The resources section is a goldmine.", name: "Aarav Mehta", branch: "ECE, 3rd Year" },
+    { text: "Mentorship helped me ace my exams!", name: "Priya Singh", branch: "ME, 1st Year" },
+    { text: "Great for networking and learning.", name: "Nikhil Verma", branch: "EE, 4th Year" },
+    { text: "I love the community vibe!", name: "Sneha Patel", branch: "CE, 2nd Year" },
+  ];
+
   return (
     <motion.div
       className="front-page"
@@ -67,9 +78,6 @@ const FrontPage = ({ currentUser, onLogout }) => {
       variants={pageVariants}
       transition={pageTransition}
     >
-      {/* Star Background */}
-      <StarBackground />
-
       {/* Background animation */}
       <motion.div className="front-background" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 1 }} />
 
@@ -110,7 +118,7 @@ const FrontPage = ({ currentUser, onLogout }) => {
 
         {/* Feature Cards */}
         <motion.div className="features-section" initial={{ opacity: 0, y: 50 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.9 }}>
-          <h2>What You Can Do</h2>
+          <h2>What You Can Do on PeerPath?</h2>
           <motion.div className="features-grid" variants={staggerContainer} initial="initial" animate="animate">
             {[
               { icon: '🎯', title: 'Ask Questions', desc: 'Get help from peers and experts on any topic', path: 'mentorship' },
@@ -121,7 +129,6 @@ const FrontPage = ({ currentUser, onLogout }) => {
               <motion.div
                 className="feature fancy-gradient-card box"
                 key={title}
-                onClick={() => handleFeatureClick(path)}
                 whileHover={{ scale: 1.1, y: -10 }}
                 whileTap={{ scale: 0.95 }}
               >
@@ -133,103 +140,100 @@ const FrontPage = ({ currentUser, onLogout }) => {
           </motion.div>
         </motion.div>
 
-        {/* Falling Text Animation Section - Card */}
-        <motion.div className="falling-text-section-card" initial={{ opacity: 0, y: 50 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 1.0 }}>
-          <div className="fancy-gradient-card">
-            <h2>Users Already Using</h2>
-            <FallingText
-              text={usernames.join(" ")}
-              highlightWords={[]}
-              trigger="scroll"
-              fontSize="1.2rem"
-              className="falling-text-custom"
-              gravity={0.3}
-              backgroundColor="transparent"
+        {/* Particles Background for remaining sections */}
+        <div style={{ 
+          position: 'relative', 
+          overflow: 'hidden'
+        }}>
+          {/* Particles Background */}
+          <div style={{ 
+            position: 'absolute', 
+            inset: 0, 
+            zIndex: 0, 
+            pointerEvents: 'none', 
+            width: '100%', 
+            height: '100%' 
+          }}>
+            <Particles
+              particleColors={['#ffffff', '#ffffff']}
+              particleCount={200}
+              particleSpread={10}
+              speed={0.1}
+              particleBaseSize={100}
+              moveParticlesOnHover={true}
+              alphaParticles={false}
+              disableRotation={false}
             />
           </div>
-        </motion.div>
 
-        {/* Stats Section */}
-        <motion.div className="stats-section" initial={{ opacity: 0, y: 50 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 1.1 }}>
-          <h2>Our Impact</h2>
-          <div className="stats-grid">
-            <motion.div className="stat-card" whileHover={{ scale: 1.05 }}>
-              <div className="stat-number"><Counter end={10000} duration={7000} suffix="+" /></div>
-              <div className="stat-label">Active Students</div>
+          {/* Content with higher z-index */}
+          <div style={{ position: 'relative', zIndex: 1 }}>
+            {/* Stats Section */}
+            <motion.div className="stats-section" initial={{ opacity: 0, y: 50 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 1.1 }}>
+              <h2>Our Impact</h2>
+              <div className="stats-grid">
+                <motion.div className="stat-card" whileHover={{ scale: 1.05 }}>
+                  <div className="stat-number"><Counter end={999} duration={7000} suffix="+" /></div>
+                  <div className="stat-label">Active Students</div>
+                </motion.div>
+                <motion.div className="stat-card" whileHover={{ scale: 1.05 }}>
+                  <div className="stat-number"><Counter end={50} duration={7000} suffix="+" /></div>
+                  <div className="stat-label">Projects Completed</div>
+                </motion.div>
+                <motion.div className="stat-card" whileHover={{ scale: 1.05 }}>
+                  <div className="stat-number"><Counter end={95} duration={7000} suffix="%" /></div>
+                  <div className="stat-label">Success Rate</div>
+                </motion.div>
+                <motion.div className="stat-card" whileHover={{ scale: 1.05 }}>
+                  <div className="stat-number"><Counter end={24} duration={7000} suffix="/7" /></div>
+                  <div className="stat-label">Support Available</div>
+                </motion.div>
+              </div>
             </motion.div>
-            <motion.div className="stat-card" whileHover={{ scale: 1.05 }}>
-              <div className="stat-number"><Counter end={500} duration={7000} suffix="+" /></div>
-              <div className="stat-label">Projects Completed</div>
+
+            {/* Users Already Using - Infinite Gallery */}
+            <motion.div className="falling-text-section-card" style={{ width: '100%', maxWidth: 1200, margin: '4rem auto 0 auto', position: 'relative' }} initial={{ opacity: 0, y: 50 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 1.0 }}>
+              <div className="fancy-gradient-card users-infinite-gallery" style={{ width: '100%', maxWidth: 'none', background: 'black', boxShadow: 'none', padding: 0, position: 'relative', borderRadius: 40 }}>
+                <h2>Students from All Years Are Already Here – Are You?</h2>
+                <div style={{ position: 'relative', width: '100%', overflow: 'hidden', background: 'black', height: 260, display: 'flex', alignItems: 'center', borderRadius: 40 }}>
+                  <div style={{ display: 'flex', gap: '2.5rem', height: '100%', alignItems: 'center', animation: 'scroll-users 30s linear infinite' }}>
+                    {[...usernames, ...usernames].map((user, idx) => (
+                      <div key={user.username || user + idx} style={{ minWidth: 160, height: 220, display: 'flex', flexDirection: 'column', alignItems: 'center', background: 'rgba(20,30,50,0.85)', borderRadius: 32, padding: '2.2rem 2.5rem', boxShadow: '0 4px 24px #00cfff33', justifyContent: 'center', border: '2px solid #00cfff', transition: 'box-shadow 0.3s' }}>
+                        <img
+                          src={user.profilePhoto || '/peerpath.png'}
+                          alt={user.username || user}
+                          style={{ width: 110, height: 110, borderRadius: '50%', objectFit: 'cover', marginBottom: 18, border: '3px solid #00cfff99', background: '#222', boxShadow: '0 2px 16px #00cfff44' }}
+                          onError={e => { e.target.onerror = null; e.target.src = '/peerpath.png'; }}
+                        />
+                        <span style={{
+                          fontWeight: 700,
+                          fontSize: 28,
+                          color: '#fff',
+                          letterSpacing: '0.5px',
+                          marginTop: 6,
+                          textAlign: 'center',
+                          lineHeight: 1.1
+                        }}>{user.username || user}</span>
+                      </div>
+                    ))}
+                  </div>
+                  <style>{`
+                    @keyframes scroll-users {
+                      0% { transform: translateX(0); }
+                      100% { transform: translateX(-50%); }
+                    }
+                  `}</style>
+                </div>
+              </div>
             </motion.div>
-            <motion.div className="stat-card" whileHover={{ scale: 1.05 }}>
-              <div className="stat-number"><Counter end={95} duration={7000} suffix="%" /></div>
-              <div className="stat-label">Success Rate</div>
-            </motion.div>
-            <motion.div className="stat-card" whileHover={{ scale: 1.05 }}>
-              <div className="stat-number"><Counter end={24} duration={7000} suffix="/7" /></div>
-              <div className="stat-label">Support Available</div>
+
+            {/* Infinite Gallery Section */}
+            <motion.div className="infinite-gallery-section" initial={{ opacity: 0, y: 50 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 1.15 }} style={{ marginTop: '0.5rem' }}>
+              <h2>Feedback That Fuels PeerPath</h2>
+              <InfiniteMenu />
             </motion.div>
           </div>
-        </motion.div>
-
-        {/* Infinite Gallery Section */}
-        <motion.div className="infinite-gallery-section" initial={{ opacity: 0, y: 50 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 1.15 }}>
-          <h2>Explore Our Features</h2>
-          <InfiniteMenu />
-        </motion.div>
-
-        {/* How It Works Section */}
-        <motion.div className="how-it-works" initial={{ opacity: 0, y: 50 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 1.2 }}>
-          <h2>How It Works</h2>
-          <div className="steps-container">
-            <motion.div className="step" whileHover={{ scale: 1.05 }}>
-              <div className="step-number">1</div>
-              <h3>Sign Up</h3>
-              <p>Create your profile and join our community</p>
-            </motion.div>
-            <motion.div className="step-arrow">→</motion.div>
-            <motion.div className="step" whileHover={{ scale: 1.05 }}>
-              <div className="step-number">2</div>
-              <h3>Connect</h3>
-              <p>Find mentors and collaborators</p>
-            </motion.div>
-            <motion.div className="step-arrow">→</motion.div>
-            <motion.div className="step" whileHover={{ scale: 1.05 }}>
-              <div className="step-number">3</div>
-              <h3>Grow</h3>
-              <p>Learn, build, and achieve together</p>
-            </motion.div>
-          </div>
-        </motion.div>
-
-        {/* ✅ New Section: Testimonials */}
-        <motion.div className="testimonials" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.3 }}>
-          <h2>What Students Say</h2>
-          <div className="testimonial-grid">
-            <motion.div className="testimonial" whileHover={{ scale: 1.02 }}>
-              <p>"PeerPath helped me find my dream project team!"</p>
-              <span>- Riya, Web Dev Enthusiast</span>
-            </motion.div>
-            <motion.div className="testimonial" whileHover={{ scale: 1.02 }}>
-              <p>"The mentorship feature is a game changer."</p>
-              <span>- Aarav, DSA Learner</span>
-            </motion.div>
-            <motion.div className="testimonial" whileHover={{ scale: 1.02 }}>
-              <p>"Amazing community and resources!"</p>
-              <span>- Priya, ML Enthusiast</span>
-            </motion.div>
-          </div>
-        </motion.div>
-
-        {/* ✅ New Section: Animated Partners Banner */}
-        <motion.div className="partners" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.5 }}>
-          <h2>Our Collaborators</h2>
-          <div className="partner-logos">
-            <motion.img src="/logos/github.png" alt="GitHub" whileHover={{ scale: 1.1 }} />
-            <motion.img src="/logos/sanity.png" alt="Sanity" whileHover={{ scale: 1.1 }} />
-            <motion.img src="/logos/vercel.png" alt="Vercel" whileHover={{ scale: 1.1 }} />
-          </div>
-        </motion.div>
+        </div>
       </motion.div>
     </motion.div>
   );
