@@ -1,11 +1,9 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import './InfiniteMenu.css';
 
 export default function InfiniteMenu() {
-  const containerRef = useRef(null);
-  const [activeIndex, setActiveIndex] = useState(0);
-  const [isMoving, setIsMoving] = useState(false);
   const [rotation, setRotation] = useState(0);
+  const [activeIndex, setActiveIndex] = useState(0);
   const [topSolvers, setTopSolvers] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -143,73 +141,17 @@ export default function InfiniteMenu() {
         setLoading(false);
       }
     };
-
     fetchMostActive();
   }, []);
 
+  // Only auto-rotate, no mouse/touch/drag/hover/click
   useEffect(() => {
-    const container = containerRef.current;
-    if (!container) return;
-
-    let isDragging = false;
-    let startX = 0;
-    let startRotation = 0;
-
-    const handleMouseDown = (e) => {
-      isDragging = true;
-      startX = e.clientX;
-      startRotation = rotation;
-      setIsMoving(true);
-    };
-
-    const handleMouseMove = (e) => {
-      if (!isDragging) return;
-      
-      const deltaX = e.clientX - startX;
-      const newRotation = startRotation + (deltaX / 2);
-      setRotation(newRotation);
-      setIsMoving(true);
-    };
-
-    const handleMouseUp = () => {
-      isDragging = false;
-      setTimeout(() => setIsMoving(false), 100);
-    };
-
-    const handleWheel = (e) => {
-      e.preventDefault();
-      const delta = e.deltaY > 0 ? 30 : -30;
-      setRotation(prev => prev + delta);
-      setIsMoving(true);
-      setTimeout(() => setIsMoving(false), 100);
-    };
-
-    container.addEventListener('mousedown', handleMouseDown);
-    document.addEventListener('mousemove', handleMouseMove);
-    document.addEventListener('mouseup', handleMouseUp);
-    container.addEventListener('wheel', handleWheel);
-
-    return () => {
-      container.removeEventListener('mousedown', handleMouseDown);
-      document.removeEventListener('mousemove', handleMouseMove);
-      document.removeEventListener('mouseup', handleMouseUp);
-      container.removeEventListener('wheel', handleWheel);
-    };
-  }, [rotation]);
-
-  // Auto-rotate when not interacting
-  useEffect(() => {
-    if (isMoving || loading) return;
+    if (loading) return;
     const interval = setInterval(() => {
-      setRotation(prev => prev + 0.6); // Slightly faster than before, but still smooth
+      setRotation(prev => prev + 0.6);
     }, 24);
     return () => clearInterval(interval);
-  }, [isMoving, loading]);
-
-  const handleItemClick = (index) => {
-    setActiveIndex(index);
-    console.log('Selected solver:', topSolvers[index]);
-  };
+  }, [loading]);
 
   if (loading) {
     return (
@@ -223,12 +165,12 @@ export default function InfiniteMenu() {
   }
 
   return (
-    <div className="infinite-menu-container" ref={containerRef} style={{ background: 'none' }}>
+    <div className="infinite-menu-container" style={{ background: 'none' }}>
       <div 
         className="gallery-sphere"
         style={{ 
           transform: `rotateY(${rotation}deg)`,
-          transition: isMoving ? 'none' : 'transform 0.45s cubic-bezier(0.4,0.2,0.2,1)'
+          transition: 'transform 0.45s cubic-bezier(0.4,0.2,0.2,1)'
         }}
       >
         {reviews.map((review, index) => {
@@ -258,7 +200,6 @@ export default function InfiniteMenu() {
                 boxShadow: '0 4px 18px #a259ff22',
                 margin: '0 2.2rem',
               }}
-              onClick={() => handleItemClick(index)}
             >
               <img
                 src={review.image}
